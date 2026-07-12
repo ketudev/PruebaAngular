@@ -4,10 +4,10 @@
     
     <div class="collapse navbar-collapse" id="navbarNav">
       <div class="navbar-nav me-auto">
-        <a class="nav-link" routerLink="/" routerLinkActive="active">Inicio</a>
+        <a class="nav-link" routerLink="/inicio" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Inicio</a>
         <a class="nav-link" routerLink="/about" routerLinkActive="active">Sobre Nosotros</a>
         
-        <a class="nav-link text-warning fw-bold" routerLink="/formulario" routerLinkActive="active" *ngIf="isLoggedIn()">
+        <a class="nav-link text-warning fw-bold" routerLink="/pedidos" routerLinkActive="active" *ngIf="isLoggedIn()">
           🛒 Hacer Pedido
         </a>
       </div>

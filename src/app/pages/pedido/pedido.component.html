@@ -1,0 +1,106 @@
+<div class="pedido-page py-5">
+  <div class="pedido-header mb-4 text-center">
+    <h2 class="display-5 text-warning mb-2">🍰 Has Tu Pedido Aquí🧁</h2>
+    <p class="text-light opacity-75">
+      Completa los datos para enviar tu pedido y recibir la confirmación al instante.
+    </p>
+  </div>
+
+  <div class="card pedido-card shadow-sm p-4">
+    <form #formPedido="ngForm" (ngSubmit)="enviarPedido(formPedido)">
+      <div class="row g-3">
+        <div class="col-12">
+          <label class="form-label">Nombre del Cliente</label>
+          <input
+            type="text"
+            class="form-control"
+            name="nombreCliente"
+            [(ngModel)]="nombreCliente"
+            required
+            minlength="3"
+            #nombreRef="ngModel"
+            [class.is-invalid]="nombreRef.invalid && nombreRef.touched"
+            placeholder="Escribe tu nombre"
+          />
+          <div *ngIf="nombreRef.invalid && nombreRef.touched" class="invalid-feedback d-block">
+            <span *ngIf="nombreRef.errors?.['required']">El nombre es obligatorio.</span>
+            <span *ngIf="nombreRef.errors?.['minlength']">Mínimo 3 caracteres.</span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Selecciona el Producto</label>
+          <select
+            class="form-select"
+            name="producto"
+            [(ngModel)]="producto"
+            required
+            #productoRef="ngModel"
+            [class.is-invalid]="productoRef.invalid && productoRef.touched"
+          >
+            <option value="">-- Selecciona Nuestro Productos --</option>
+            <option value="Tortas">Tortas</option>
+            <option value="Galletas">Galletas</option>
+            <option value="Helados">Helados</option>
+          </select>
+          <div *ngIf="productoRef.invalid && productoRef.touched" class="invalid-feedback d-block">
+            <span *ngIf="productoRef.errors?.['required']">Selecciona Nuestro Producto.</span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Cantidad</label>
+          <input
+            type="number"
+            class="form-control"
+            name="cantidad"
+            [(ngModel)]="cantidad"
+            required
+            min="1"
+            #cantidadRef="ngModel"
+            [class.is-invalid]="cantidadRef.invalid && cantidadRef.touched"
+            placeholder="1"
+          />
+          <div *ngIf="cantidadRef.invalid && cantidadRef.touched" class="invalid-feedback d-block">
+            <span *ngIf="cantidadRef.errors?.['required']">La cantidad es obligatoria.</span>
+            <span *ngIf="cantidadRef.errors?.['min']">La cantidad mínima es 1.</span>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <label class="form-label">Comentarios o Detalles Especiales</label>
+          <textarea
+            class="form-control"
+            name="comentarios"
+            [(ngModel)]="comentarios"
+            rows="4"
+            placeholder="Escribe aquí cualquier detalle adicional..."
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="text-end mt-4">
+        <button class="btn btn-warning btn-lg px-4" type="submit" [disabled]="formPedido.invalid">
+          Enviar Pedido
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="pedidoGuardado" class="card pedido-result mt-4 p-4 shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title text-warning">Pedido recibido</h5>
+      <p class="card-text text-light mb-2">
+        <strong>Cliente:</strong> {{ pedidoGuardado.nombreCliente }}
+      </p>
+      <p class="card-text text-light mb-2">
+        <strong>Producto:</strong> {{ pedidoGuardado.producto }}
+      </p>
+      <p class="card-text text-light mb-2">
+        <strong>Cantidad:</strong> {{ pedidoGuardado.cantidad }}</p>
+      <p *ngIf="pedidoGuardado.comentarios" class="card-text text-light">
+        <strong>Comentarios:</strong> {{ pedidoGuardado.comentarios }}
+      </p>
+    </div>
+  </div>
+</div>
