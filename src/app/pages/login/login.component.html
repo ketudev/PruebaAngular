@@ -1,5 +1,5 @@
 <div class="container mt-5">
-    <h2 class="text-center text-warning p-4">Iniciar Sesión</h2>
+    <h2 class="text-center text-danger p-4">Iniciar Sesión</h2>
 
     <div *ngIf="error" class="alert alert-danger">
         {{ error }}
@@ -16,6 +16,6 @@
             <input type="password" maxlength="64" class="form-control" [(ngModel)]="password" name="password">
         </div>
 
-        <button type="submit" class="btn btn-warning w-100">Ingresar</button>
+        <button type="submit" class="btn btn-danger w-100">Ingresar</button>
     </form>
 </div>
