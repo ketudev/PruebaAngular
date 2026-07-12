@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
-import { CommonModule } from '@angular/common'; 
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -28,12 +28,11 @@ export class LoginComponent {
         fechaLogin: new Date()
       };
       localStorage.setItem('sesion', JSON.stringify(sesionUsuario));
-      
-      this.router.navigate(['/pedidos']); 
 
-
+      this.router.navigate(['/pedidos']);
     } else {
       this.error = 'Usuario o contraseña incorrectos';
     }
   }
+
 }
