@@ -1,0 +1,53 @@
+.pedido-page {
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+.pedido-header {
+  color: #f8b739;
+}
+
+.pedido-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  padding: 1.6rem;
+  backdrop-filter: blur(10px);
+}
+
+.pedido-card .form-label {
+  font-weight: 600;
+}
+
+.pedido-card .form-control,
+.pedido-card .form-select,
+.pedido-card textarea {
+  background: rgba(255, 255, 255, 0.05);
+  color: #f8f9fa;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.pedido-card .form-control:focus,
+.pedido-card .form-select:focus,
+.pedido-card textarea:focus {
+  border-color: #f8b739;
+  box-shadow: 0 0 0 0.2rem rgba(248, 183, 57, 0.2);
+}
+
+.pedido-card .invalid-feedback {
+  color: #e74c3c;
+}
+
+.pedido-result {
+  background: #1f2126;
+  border: 1px solid rgba(248, 183, 57, 0.18);
+  border-radius: 1rem;
+}
+
+.pedido-result h5 {
+  color: #f8b739;
+}
+
+.pedido-result p {
+  color: #e9ecef;
+}
