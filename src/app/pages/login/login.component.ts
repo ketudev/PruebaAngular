@@ -28,8 +28,10 @@ export class LoginComponent {
         fechaLogin: new Date()
       };
       localStorage.setItem('sesion', JSON.stringify(sesionUsuario));
-
+      
       this.router.navigate(['/pedidos']); 
+
+
     } else {
       this.error = 'Usuario o contraseña incorrectos';
     }
