@@ -1,8 +1,14 @@
-<div class="container text-center my-5 p-5 bg-dark bg-opacity-75 rounded-3 text-light">
-  <h1 class="display-4 fw-bold text-warning mb-3">¡Bienvenidos al Rincón Sabroso!</h1>
-  <p class="lead mb-4">La mejor comida rápida de la zona, directa a tu mesa en minutos.</p>
+<div class="container text-center my-5 p-5 bg-dark bg-dark-subtle bg-opacity-75 rounded-3 p-5 text-light shadow mb-5 mx-0">
   
-  <a class="btn btn-warning btn-lg fw-bold px-5 py-3 shadow" routerLink="/login">
+  <h1 class="display-4 fw-bold text-danger mb-3">¡Bienvenidos a La Golosa!</h1>
+  <p class="lead mb-4">La repostería mas deliciosa, directa a tu mesa en minutos.</p>
+  
+  <div *ngIf="mensaje" class="alert alert-info fw-bold w-50 mx-auto shadow-sm">
+    {{ mensaje }}
+  </div>
+
+  <button class="btn btn-danger btn-lg fw-bold px-5 py-3 shadow" (click)="intentarEntrar()">
     🔑 Entrar a la App para Pedir
-  </a>
+  </button>
+
 </div>
