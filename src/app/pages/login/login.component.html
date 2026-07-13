@@ -8,12 +8,12 @@
     <form (ngSubmit)="login()">
         <div class="mb-3">
             <label class="form-label">Usuario</label>
-            <input type="text" maxlength="40" class="form-control" [(ngModel)]="usuario" name="usuario">
+            <input type="text" maxlength="40" class="form-control" [(ngModel)]="usuario" name="usuario" placeholder="Ingrese su nombre de usuario">
         </div>
 
         <div class="mb-3">
             <label class="form-label">Contraseña</label>
-            <input type="password" maxlength="64" class="form-control" [(ngModel)]="password" name="password">
+            <input type="password" maxlength="64" class="form-control" [(ngModel)]="password" name="password" placeholder="Ingrese su contraseña">
         </div>
 
         <button type="submit" class="btn btn-danger w-100">Ingresar</button>
