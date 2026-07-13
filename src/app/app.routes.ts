@@ -3,6 +3,7 @@ import { InicioComponent } from './pages/inicio/inicio.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AboutComponent } from './pages/about/about.component';
 import { PedidoComponent } from './pages/pedido/pedido.component';
+import { MisPedidosComponent } from './pages/mis-pedidos/mis-pedidos.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
@@ -10,6 +11,7 @@ export const routes: Routes = [
   { path: 'about', component: AboutComponent },
   { path: 'login', component: LoginComponent },
   { path: 'pedidos', component: PedidoComponent },
+  { path: 'mis-pedidos', component: MisPedidosComponent },
   { path: 'formulario', redirectTo: 'pedidos', pathMatch: 'full' },
   { path: '**', redirectTo: 'inicio' }
 ];

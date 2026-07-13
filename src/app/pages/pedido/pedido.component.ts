@@ -7,36 +7,51 @@ import { FormsModule, NgForm } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './pedido.component.html',
-  styleUrl: './pedido.component.css'
+  styleUrls: ['./pedido.component.css']
 })
 export class PedidoComponent {
   nombreCliente = '';
+  email = '';
   producto = '';
-  cantidad: number | null = null;
+  cantidad: number = 1;
   comentarios = '';
-  pedidoGuardado: {
-    nombreCliente: string;
-    producto: string;
-    cantidad: number;
-    comentarios: string;
-  } | null = null;
+  mostrarAlertaExito: boolean = false;
 
   enviarPedido(formPedido: NgForm) {
     if (formPedido.invalid) {
       return;
     }
 
-    this.pedidoGuardado = {
+    const nuevoPedido = {
+      id: Date.now(), 
       nombreCliente: this.nombreCliente.trim(),
+      email: this.email.trim(),
       producto: this.producto,
-      cantidad: this.cantidad ?? 0,
-      comentarios: this.comentarios.trim()
+      cantidad: this.cantidad && this.cantidad > 0 ? this.cantidad : 1,
+      comentarios: this.comentarios.trim(),
+      fecha: new Date().toLocaleDateString()
     };
 
+    const historial = localStorage.getItem('mis_pedidos')
+      ? JSON.parse(localStorage.getItem('mis_pedidos')!)
+      : [];
+
+    historial.unshift(nuevoPedido);
+
+    localStorage.setItem('mis_pedidos', JSON.stringify(historial));
+
+    this.mostrarAlertaExito = true;
+
+  setTimeout(() => {
+    this.mostrarAlertaExito = false;
+  }, 3000);
+
     formPedido.resetForm();
-    this.nombreCliente = '';
-    this.producto = '';
-    this.cantidad = null;
-    this.comentarios = '';
-  }
-}
+    setTimeout(() => {
+  this.nombreCliente = '';
+  this.email = '';  
+  this.producto = '';
+  this.cantidad = 1; 
+  this.comentarios = '';
+},0);
+}}

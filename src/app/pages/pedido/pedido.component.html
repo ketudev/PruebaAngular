@@ -27,7 +27,24 @@
             <span *ngIf="nombreRef.errors?.['minlength']">Mínimo 3 caracteres.</span>
           </div>
         </div>
-
+        <div class="col-12">
+          <label class="form-label">Correo Electrónico</label>
+          <input
+            type="email"
+            class="form-control"
+            name="email"
+            [(ngModel)]="email"
+            required
+            email
+            #emailRef="ngModel"
+            [class.is-invalid]="emailRef.invalid && emailRef.touched"
+            placeholder="ejemplo@correo.com"
+          />
+          <div *ngIf="emailRef.invalid && emailRef.touched" class="invalid-feedback d-block">
+            <span *ngIf="emailRef.errors?.['required']">El correo es obligatorio.</span>
+            <span *ngIf="emailRef.errors?.['email']">Formato de correo inválido.</span>
+          </div>
+        </div>
         <div class="col-md-6">
           <label class="form-label">Selecciona el Producto</label>
           <select
@@ -56,7 +73,7 @@
             name="cantidad"
             [(ngModel)]="cantidad"
             required
-            min="1"
+            pattern="[0-50]*"
             #cantidadRef="ngModel"
             [class.is-invalid]="cantidadRef.invalid && cantidadRef.touched"
             placeholder="1"
@@ -78,6 +95,23 @@
           ></textarea>
         </div>
       </div>
+<div *ngIf="mostrarAlertaExito" 
+     class="position-fixed top-0 end-0 p-3" 
+     style="z-index: 1050; margin-top: 20px; margin-right: 20px;">
+  <div class="card bg-dark border-warning text-light shadow-lg" style="min-width: 300px;">
+    <div class="card-body d-flex align-items-center justify-content-between p-3">
+      <div class="d-flex align-items-center">
+        <span class="fs-4 me-2">🍰</span>
+        <div>
+          <h6 class="text-warning mb-0 font-weight-bold">¡Éxito!</h6>
+          <small class="text-white-50">Pedido registrado correctamente.</small>
+        </div>
+      </div>
+      <button type="button" class="btn-close btn-close-white small ms-3" (click)="mostrarAlertaExito = false"></button>
+    </div>
+  </div>
+</div>
+
 
       <div class="text-end mt-4">
         <button class="btn btn-warning btn-lg px-4" type="submit" [disabled]="formPedido.invalid">
@@ -85,22 +119,5 @@
         </button>
       </div>
     </form>
-  </div>
-
-  <div *ngIf="pedidoGuardado" class="card pedido-result mt-4 p-4 shadow-sm">
-    <div class="card-body">
-      <h5 class="card-title text-warning">Pedido recibido</h5>
-      <p class="card-text text-light mb-2">
-        <strong>Cliente:</strong> {{ pedidoGuardado.nombreCliente }}
-      </p>
-      <p class="card-text text-light mb-2">
-        <strong>Producto:</strong> {{ pedidoGuardado.producto }}
-      </p>
-      <p class="card-text text-light mb-2">
-        <strong>Cantidad:</strong> {{ pedidoGuardado.cantidad }}</p>
-      <p *ngIf="pedidoGuardado.comentarios" class="card-text text-light">
-        <strong>Comentarios:</strong> {{ pedidoGuardado.comentarios }}
-      </p>
-    </div>
   </div>
 </div>
