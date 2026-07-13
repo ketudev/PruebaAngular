@@ -1,5 +1,5 @@
 <div class="container mt-5">
-    <h2 class="text-center text-warning p-4">Login</h2>
+    <h2 class="text-center text-danger p-4">Iniciar Sesión</h2>
 
     <div *ngIf="error" class="alert alert-danger">
         {{ error }}
@@ -8,14 +8,14 @@
     <form (ngSubmit)="login()">
         <div class="mb-3">
             <label class="form-label">Usuario</label>
-            <input type="text" class="form-control" [(ngModel)]="usuario" name="usuario">
+            <input type="text" maxlength="40" class="form-control" [(ngModel)]="usuario" name="usuario" placeholder="Ingrese su nombre de usuario">
         </div>
 
         <div class="mb-3">
             <label class="form-label">Contraseña</label>
-            <input type="password" class="form-control" [(ngModel)]="password" name="password">
+            <input type="password" maxlength="64" class="form-control" [(ngModel)]="password" name="password" placeholder="Ingrese su contraseña">
         </div>
 
-        <button type="submit" class="btn btn-warning w-100">Ingresar</button>
+        <button type="submit" class="btn btn-danger w-100">Ingresar</button>
     </form>
 </div>

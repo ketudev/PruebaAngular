@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router, NavigationEnd } from '@angular/router'; // <-- Importamos NavigationEnd
+import { RouterModule, Router, NavigationEnd} from '@angular/router'; // <-- Importamos NavigationEnd
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -32,6 +32,6 @@ export class NavbarComponent implements OnInit {
   // Función para el botón de salir
   logout() {
     localStorage.removeItem('sesion'); // Borramos el JSON de sesión
-    this.router.navigate(['/inicio']);   // Rebotamos al usuario al inicio
+    this.router.navigate(['/']);   // Rebotamos al usuario al inicio
   }
 }
