@@ -6,72 +6,70 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './mis-pedidos.component.html',
-  styleUrls: ['./mis-pedidos.component.css']
+  styleUrl: './mis-pedidos.component.css'
 })
 export class MisPedidosComponent implements OnInit {
-  listaPedidos: any[] = [];
 
-  pedidoParaEliminar: number | null = null;
-  
+  listaHistorial: any[] = [];
+
+  // === VARIABLES PARA CONTROLAR EL POPUP ===
+  mostrarPopupConfirmacion: boolean = false;
+  accionPendiente: string = ''; // Puede ser 'individual' o 'todos'
+  indicePendiente: number = -1; // Guarda qué tarjeta exacta se va a borrar
+
   ngOnInit(): void {
     this.cargarPedidos();
   }
 
-  cargarPedidos(): void {
-    this.listaPedidos = [];
+  cargarPedidos() {
+    const datosGuardados = localStorage.getItem('historialPedidos');
+    if (datosGuardados) {
+      this.listaHistorial = JSON.parse(datosGuardados);
+      this.listaHistorial.reverse();
+    }
+  }
 
-    const datos = localStorage.getItem('mis_pedidos');
-    if (datos) {
-      try {
-        const pedidosGuardados = JSON.parse(datos);
-        this.listaPedidos = Array.isArray(pedidosGuardados) ? pedidosGuardados : [pedidosGuardados];
-      } catch (error) {
-        console.error('No se pudieron leer los pedidos guardados:', error);
-      }
+  // === PASO 1: ABRIR EL POPUP SEGÚN LO QUE SE QUIERA HACER ===
+
+  prepararEliminarIndividual(index: number) {
+    this.accionPendiente = 'individual';
+    this.indicePendiente = index;
+    this.mostrarPopupConfirmacion = true; // Mostramos el popup
+  }
+
+  prepararLimpiarHistorial() {
+    this.accionPendiente = 'todos';
+    this.mostrarPopupConfirmacion = true; // Mostramos el popup
+  }
+
+  // === PASO 2: EJECUTAR LA ACCIÓN SI EL USUARIO DICE "SÍ" ===
+
+  confirmarAccion() {
+    if (this.accionPendiente === 'individual') {
+      // Borramos solo uno
+      this.listaHistorial.splice(this.indicePendiente, 1);
+      const arregloParaGuardar = [...this.listaHistorial].reverse();
+      localStorage.setItem('historialPedidos', JSON.stringify(arregloParaGuardar));
+
+    } else if (this.accionPendiente === 'todos') {
+      // Borramos todos
+      localStorage.removeItem('historialPedidos');
+      this.listaHistorial = [];
     }
 
-    const pedidoGuardado = localStorage.getItem('pedidoGuardado');
-    if (pedidoGuardado) {
-      try {
-        const pedido = JSON.parse(pedidoGuardado);
-        const pedidoFormateado = {
-          id: pedido.id ?? Date.now(),
-          fecha: pedido.fecha ?? new Date().toLocaleDateString('es-CL'),
-          nombreCliente: pedido.nombreCliente ?? '',
-          email: pedido.email ?? '',
-          producto: pedido.producto ?? '',
-          cantidad: pedido.cantidad ?? 0,
-          comentarios: pedido.comentarios ?? ''
-        };
-
-        const yaExiste = this.listaPedidos.some((item: any) => item.id === pedidoFormateado.id);
-        if (!yaExiste) {
-          this.listaPedidos.unshift(pedidoFormateado);
-        }
-      } catch (error) {
-        console.error('No se pudo leer el pedido guardado:', error);
-      }
-    }
-
-    this.guardarPedidos();
+    // Al terminar, cerramos el popup
+    this.cerrarPopup();
   }
 
-  private guardarPedidos(): void {
-    localStorage.setItem('mis_pedidos', JSON.stringify(this.listaPedidos));
-  }
+  // === PASO 3: CANCELAR (SI EL USUARIO DICE "NO") ===
 
-  eliminarPedido(id: number): void {
-    this.pedidoParaEliminar = id;
+  cerrarPopup() {
+    this.mostrarPopupConfirmacion = false;
+    this.accionPendiente = '';
+    this.indicePendiente = -1;
   }
-
-  cancelarEliminacion(): void {
-    this.pedidoParaEliminar = null;
-  }
-
-  confirmarEliminacion(): void {
-    if (this.pedidoParaEliminar === null) return;
-    this.listaPedidos = this.listaPedidos.filter(pedido => pedido.id !== this.pedidoParaEliminar);
-    this.guardarPedidos();
-    this.pedidoParaEliminar = null;
+  formatearDinero(valor: number): string {
+    if (valor === undefined || isNaN(valor)) return '';
+    return '$' + valor.toLocaleString('es-CL');
   }
 }

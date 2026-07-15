@@ -1,69 +1,117 @@
-<div class="container py-5">
-  <div class="text-center mb-4">
-    <h2 class="display-5 text-warning mb-2">🧁 Historial de Mis Pedidos 🍰</h2>
-    <p class="text-light opacity-75">Revisa el estado y detalle de tus solicitudes de pastelería.</p>
-  </div>
-
-  <div *ngIf="listaPedidos.length === 0" class="alert alert-info text-center shadow-sm" role="alert">
-    Todavía no has realizado ningún pedido. ¡Ve a la sección de pedidos y tienta tu paladar!
-  </div>
-
-  <div *ngIf="listaPedidos.length > 0" class="row g-4"> 
-    <div class="col-12 col-md-6 col-lg-4 " *ngFor="let pedido of listaPedidos">
-      <div class="card bg-dark-subtle p-3 rounded-3 h-100 shadow-sm">  
-        <div class="card-body d-flex flex-column justify-content-between">
-          <div>
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <h5 class="card-title text-warning m-0">Pedido Recibido</h5>
-              <span class="badge bg-secondary text-wrap">{{ pedido.fecha || 'Reciente' }}</span>
-            </div>
-            
-            <p class="card-text text-light mb-2">
-              <strong>Cliente:</strong> {{ pedido.nombreCliente }}
-            </p>
-            <p class="card-text text-light mb-2">
-              <strong>Correo:</strong> {{ pedido.email }}
-            </p>
-            <p class="card-text text-light mb-2">
-              <strong>Productos: </strong> <span class="text-info font-monospace">{{ pedido.producto }}</span>
-            </p>
-            <p class="card-text text-light mb-2">
-              <strong>Cantidad:</strong> {{ pedido.cantidad }}
-            </p>
-            <p *ngIf="pedido.comentarios" class="card-text text-light-50 bg-black bg-opacity-25 p-2 rounded small">
-              <strong>Comentarios:</strong> {{ pedido.comentarios }}
-            </p>
-          </div>
-<div *ngIf="pedidoParaEliminar !== null" 
-     class="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" 
-     style="background: rgba(0, 0, 0, 0.7); z-index: 1060;">
+<div class="container my-5 text-light">
   
-  <div class="card bg-dark border-danger text-light shadow-lg animate__animated animate__fadeInUp" style="max-width: 400px; width: 90%;">
-    <div class="card-body p-4 text-center">
-      <span class="fs-1 text-danger d-block mb-2">🗑️</span>
-      <h5 class="card-title text-warning mb-3">¿Eliminar Pedido?</h5>
-      <p class="card-text text-white-50 small mb-4"> 
-        Esta acción no se puede deshacer. ¿Estás seguro de que deseas cancelar este pedido?
-      </p>
-      
-      <div class="d-flex justify-content-center gap-2">
-        <button type="button" class="btn btn-outline-light px-4" (click)="cancelarEliminacion()">
-          Cancelar
-        </button>
-        <button type="button" class="btn btn-danger px-4" (click)="confirmarEliminacion()">
-          Sí, Eliminar
-        </button>
+  <div class="text-center border-bottom border-secondary pb-4 mb-5">
+    <h2 class="text-warning fw-bold mb-3">Historial de Mis Pedidos</h2>
+    
+    <button *ngIf="listaHistorial.length > 0" 
+            class="btn btn-danger btn-sm fw-bold px-4 shadow" 
+            (click)="prepararLimpiarHistorial()">
+      🗑️ Vaciar Historial
+    </button>
+  </div>
+
+  <div *ngIf="listaHistorial.length === 0" class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <div class="bg-dark-subtle bg-opacity-75 rounded-4 p-5 text-center shadow">
+        <div class="text-secondary display-1 mb-3 opacity-50">📋</div>
+        <h4 class="text-light fw-bold">No se han registrado pedidos</h4>
+        <p class="text-secondary m-0">Los pedidos que realices aparecerán listados aquí de izquierda a derecha.</p>
       </div>
     </div>
   </div>
-</div>
-          <div class="mt-3 text-end">
-            <button class="btn btn-outline-danger btn-sm" (click)="eliminarPedido(pedido.id)">
-              Eliminar Pedido
-            </button>
+
+  <div *ngIf="listaHistorial.length > 0" class="row g-4">
+    
+    <div class="col-12 col-md-6 col-lg-4" *ngFor="let pedido of listaHistorial; let i = index">
+      <div class="bg-dark-subtle bg-opacity-75 border border-secondary border-opacity-25 rounded-4 shadow-lg p-4 h-100 d-flex flex-column">
+
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <h4 class="text-light fw-bold m-0 text-truncate pe-2">{{ pedido.nombre }}</h4>
+          <button class="btn btn-outline-danger btn-sm px-2 py-1" title="Eliminar este pedido" (click)="prepararEliminarIndividual(i)">
+            ❌
+          </button>
+        </div>
+
+        <div class="mb-3">
+          <a href="mailto:{{ pedido.email }}" class="text-info small text-decoration-none d-block mb-1">{{ pedido.email }}</a>
+          <a href="tel:{{ pedido.telefono }}" class="text-secondary small text-decoration-none d-block mb-3">📞 {{ pedido.telefono }}</a>
+          <span class="badge bg-secondary bg-opacity-50 text-light px-3 py-2 rounded-pill fw-normal">
+            📅 {{ pedido.fecha }}
+          </span>
+        </div>
+
+        <div class="bg-black bg-opacity-25 p-3 rounded-3 mb-4">
+          
+          <div class="d-flex align-items-center mb-2">
+            <span class="fs-5 me-2" *ngIf="pedido.metodoEntrega === 'despacho'">🛵</span>
+            <span class="fs-5 me-2" *ngIf="pedido.metodoEntrega === 'retiro'">🏬</span>
+            <div>
+              <div class="text-warning small fw-bold text-uppercase" style="font-size: 0.7rem;">Entrega</div>
+              <div class="text-light small lh-sm">
+                <span *ngIf="pedido.metodoEntrega === 'retiro'">Retiro en Local</span>
+                <span *ngIf="pedido.metodoEntrega === 'despacho'">{{ pedido.direccion }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center mt-3 pt-2 border-top border-secondary border-opacity-25">
+            <span class="fs-5 me-2" *ngIf="pedido.metodoPago === 'efectivo'">💵</span>
+            <span class="fs-5 me-2" *ngIf="pedido.metodoPago === 'transferencia'">📱</span>
+            <span class="fs-5 me-2" *ngIf="pedido.metodoPago === 'tarjeta'">💳</span>
+            <div>
+              <div class="text-warning small fw-bold text-uppercase" style="font-size: 0.7rem;">Pago</div>
+              <div class="text-light small text-capitalize">{{ pedido.metodoPago }}</div>
+            </div>
+          </div>
+
+        </div>
+
+        <hr class="border-secondary opacity-25 w-100 mt-0 mb-4">
+
+        <div class="mt-auto bg-dark bg-opacity-25 rounded-3 p-3">
+          <h6 class="text-secondary fw-bold mb-3 text-uppercase small tracking-wide">Resumen del Pedido</h6>
+          
+          <div class="d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25 pb-2 mb-2" *ngFor="let item of pedido.productos">
+            <div class="pe-2 text-truncate">
+              <span class="text-light fw-bold d-block">🍪 {{ item.producto }}</span>
+              <span class="text-secondary small">Cant: {{ item.cantidad }}</span>
+            </div>
+            <span class="text-light fw-bold font-monospace bg-black bg-opacity-25 px-2 py-1 rounded">
+              {{ formatearDinero(item.subtotal) }}
+            </span>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mt-3 pt-2">
+            <span class="text-warning fw-bold fs-5 tracking-wide">TOTAL</span>
+            <span class="text-warning fw-bold fs-5 bg-black bg-opacity-50 px-3 py-1 rounded-3 border border-warning border-opacity-25 shadow-sm">
+              {{ pedido.total || 'N/A' }} 
+            </span>
           </div>
         </div>
+
       </div>
     </div>
+
   </div>
+
 </div>
+
+<div class="position-fixed top-0 start-0 w-100 h-100 bg-black bg-opacity-75 d-flex justify-content-center align-items-center" 
+     style="z-index: 1050;" 
+     *ngIf="mostrarPopupConfirmacion">
+  
+  <div class="card shadow-lg border-danger bg-dark text-light text-center p-4 m-3" style="max-width: 400px; width: 100%;">
+    <div class="text-danger mb-3" style="font-size: 3.5rem; line-height: 1;">⚠️</div>
+    <h3 class="fw-bold text-danger">¿Estás seguro?</h3>
+    
+    <p class="text-secondary fs-6 mt-2 mb-4">
+      <span *ngIf="accionPendiente === 'todos'">Esta acción borrará absolutamente <b>todos los pedidos</b> de tu historial. No se puede deshacer.</span>
+      <span *ngIf="accionPendiente === 'individual'">Esta acción eliminará permanentemente <b>este pedido</b> de tu lista.</span>
+    </p>
+    
+    <div class="d-flex justify-content-center gap-3">
+      <button class="btn btn-outline-secondary fw-bold px-4" (click)="cerrarPopup()">Cancelar</button>
+      <button class="btn btn-danger fw-bold px-4 shadow" (click)="confirmarAccion()">Sí, eliminar</button>
+    </div>
+  </div>
+</div>  

@@ -20,7 +20,7 @@ export class LoginComponent {
   constructor(private router: Router) { }
 
   login() {
-    if (this.usuario === 'Javier' && this.password === '1234') {
+    if (this.usuario === 'admin' && this.password === '1234') {
       this.error = '';
       const sesionUsuario = {
         usuario: this.usuario,
