@@ -1,43 +1,40 @@
 <div class="container my-5 text-light">
 
-  <div class="text-center border-bottom border-secondary pb-3 mb-5">
+  <div class="text-center border-bottom border-light pb-3 mb-5">
     <h1 class="text-warning fw-bold">Arma tu Pedido</h1>
-    <p class="text-secondary">Completa tus datos, elige tus productos favoritos y nosotros hacemos el resto.</p>
+    <p class="text-light fw-bold">Completa tus datos, elige tus productos favoritos y nosotros hacemos el resto.</p>
   </div>
 
-  <div *ngIf="errorCliente" class="alert alert-danger fw-bold border-danger shadow text-center" role="alert">
-    {{ errorCliente }}
-  </div>
 
-  <div class="card bg-dark-subtle bg-opacity-50 text-light border-secondary border-opacity-25 shadow-lg mb-5 p-4 rounded-4">
+
+  <div
+    class="card bg-dark-subtle bg-opacity-50 text-light border-secondary border-opacity-25 shadow-lg mb-5 p-4 rounded-4">
     <h4 class="text-warning border-bottom border-secondary pb-2 mb-4">1. Tus Datos y Envío</h4>
-    
+
     <div class="row g-3 mb-4">
       <div class="col-12 col-md-4">
         <label class="form-label fw-bold text-secondary small mb-1">Nombre Completo</label>
-        <input type="text" class="form-control bg-dark text-light border-secondary" [(ngModel)]="cliente.nombre" name="nombre" #nombreVar="ngModel" required maxlength="30" placeholder="Ej: Juan Pérez">
-        <div *ngIf="nombreVar.invalid && (nombreVar.dirty || nombreVar.touched)" class="text-danger small mt-1 fw-bold">⚠️ Obligatorio.</div>
+        <input type="text" class="form-control bg-dark text-light border-secondary" [(ngModel)]="cliente.nombre"
+          name="nombre" #nombreVar="ngModel" required maxlength="30" placeholder="Ej: Juan Pérez">
+        <div *ngIf="nombreVar.invalid && (nombreVar.dirty || nombreVar.touched)" class="text-danger small mt-1 fw-bold">
+          ⚠️ Obligatorio.</div>
       </div>
-      
+
       <div class="col-12 col-md-4">
         <label class="form-label fw-bold text-secondary small mb-1">Correo Electrónico</label>
-        <input type="email" class="form-control bg-dark text-light border-secondary" [(ngModel)]="cliente.email" name="email" #emailVar="ngModel" required email placeholder="tu@email.com">
-        <div *ngIf="emailVar.invalid && (emailVar.dirty || emailVar.touched)" class="text-danger small mt-1 fw-bold">⚠️ Formato inválido.</div>
+        <input type="email" class="form-control bg-dark text-light border-secondary" [(ngModel)]="cliente.email"
+          name="email" #emailVar="ngModel" required email placeholder="tu@email.com">
+        <div *ngIf="emailVar.invalid && (emailVar.dirty || emailVar.touched)" class="text-danger small mt-1 fw-bold">⚠️
+          Formato inválido.</div>
       </div>
 
       <div class="col-12 col-md-4">
         <label class="form-label fw-bold text-secondary small mb-1">Teléfono Móvil</label>
         <div class="input-group">
           <span class="input-group-text bg-secondary text-light border-secondary">🇨🇱</span>
-          <input type="tel" 
-                 class="form-control bg-dark text-light border-secondary fw-bold text-warning" 
-                 [(ngModel)]="cliente.telefono" 
-                 name="telefono" 
-                 #telVar="ngModel" 
-                 required 
-                 minlength="12" 
-                 maxlength="12" 
-                 placeholder="+569XXXXXXXX">
+          <input type="tel" class="form-control bg-dark text-light border-secondary fw-bold text-warning"
+            [(ngModel)]="cliente.telefono" name="telefono" #telVar="ngModel" required minlength="12" maxlength="12"
+            placeholder="+569XXXXXXXX">
         </div>
         <!-- Mensaje de error en vivo -->
         <div *ngIf="telVar.invalid && (telVar.dirty || telVar.touched)" class="text-danger small mt-1 fw-bold">
@@ -48,123 +45,144 @@
         </div>
       </div>
 
-    <div class="row g-4 bg-black bg-opacity-25 p-3 rounded-3 border border-secondary border-opacity-25 mx-0">
-      <div class="col-12 col-md-6">
-        <label class="fw-bold mb-3 text-warning">Método de Entrega</label>
-        <div class="d-flex gap-4 mb-3">
-          <div class="form-check">
-            <input class="form-check-input bg-dark border-secondary cursor-pointer" type="radio" name="entrega" id="retiro" value="retiro" [(ngModel)]="cliente.metodoEntrega">
-            <label class="form-check-label text-light cursor-pointer" for="retiro">🏬 Retiro en Local</label>
+      <div class="row g-4 bg-black bg-opacity-25 p-3 rounded-3 border border-secondary border-opacity-25 mx-0">
+        <div class="col-12 col-md-6">
+          <label class="fw-bold mb-3 text-warning">Método de Entrega</label>
+          <div class="d-flex gap-4 mb-3">
+            <div class="form-check">
+              <input class="form-check-input bg-dark border-secondary cursor-pointer" type="radio" name="entrega"
+                id="retiro" value="retiro" [(ngModel)]="cliente.metodoEntrega">
+              <label class="form-check-label text-light cursor-pointer" for="retiro">🏬 Retiro en Local</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input bg-dark border-secondary cursor-pointer" type="radio" name="entrega"
+                id="despacho" value="despacho" [(ngModel)]="cliente.metodoEntrega">
+              <label class="form-check-label text-light cursor-pointer" for="despacho">🛵 Despacho a Domicilio</label>
+            </div>
           </div>
-          <div class="form-check">
-            <input class="form-check-input bg-dark border-secondary cursor-pointer" type="radio" name="entrega" id="despacho" value="despacho" [(ngModel)]="cliente.metodoEntrega">
-            <label class="form-check-label text-light cursor-pointer" for="despacho">🛵 Despacho a Domicilio</label>
+
+          <div *ngIf="cliente.metodoEntrega === 'despacho'">
+            <div class="input-group">
+              <span class="input-group-text bg-secondary text-light border-secondary">📍 Dirección</span>
+              <input type="text" class="form-control bg-dark text-light border-secondary"
+                [(ngModel)]="cliente.direccion" name="direccion" #dirVar="ngModel" required minlength="5"
+                placeholder="Ej: Av. Las Galletas 123">
+            </div>
+            <div *ngIf="dirVar.invalid && (dirVar.dirty || dirVar.touched)" class="text-danger small mt-1 fw-bold">⚠️
+              Ingresa una dirección válida.</div>
           </div>
         </div>
 
-        <div *ngIf="cliente.metodoEntrega === 'despacho'">
-          <div class="input-group">
-            <span class="input-group-text bg-secondary text-light border-secondary">📍 Dirección</span>
-            <input type="text" class="form-control bg-dark text-light border-secondary" [(ngModel)]="cliente.direccion" name="direccion" #dirVar="ngModel" required minlength="5" placeholder="Ej: Av. Las Galletas 123">
-          </div>
-          <div *ngIf="dirVar.invalid && (dirVar.dirty || dirVar.touched)" class="text-danger small mt-1 fw-bold">⚠️ Ingresa una dirección válida.</div>
+        <div class="col-12 col-md-6 border-start border-secondary border-opacity-25 ps-md-4">
+          <label class="fw-bold mb-3 text-warning">Método de Pago</label>
+          <select class="form-select bg-dark text-light border-secondary shadow-sm" [(ngModel)]="cliente.metodoPago"
+            name="pago" required #pagoVar="ngModel">
+            <option value="" disabled selected>-- Selecciona cómo pagarás --</option>
+            <option value="efectivo">💵 Efectivo (Al recibir/retirar)</option>
+            <option value="transferencia">📱 Transferencia Bancaria</option>
+            <option value="tarjeta">💳 Tarjeta (Débito/Crédito)</option>
+          </select>
+          <div *ngIf="pagoVar.invalid && (pagoVar.dirty || pagoVar.touched)" class="text-danger small mt-1 fw-bold">⚠️
+            Obligatorio.</div>
         </div>
-      </div>
-
-      <div class="col-12 col-md-6 border-start border-secondary border-opacity-25 ps-md-4">
-        <label class="fw-bold mb-3 text-warning">Método de Pago</label>
-        <select class="form-select bg-dark text-light border-secondary shadow-sm" [(ngModel)]="cliente.metodoPago" name="pago" required #pagoVar="ngModel">
-          <option value="" disabled selected>-- Selecciona cómo pagarás --</option>
-          <option value="efectivo">💵 Efectivo (Al recibir/retirar)</option>
-          <option value="transferencia">📱 Transferencia Bancaria</option>
-          <option value="tarjeta">💳 Tarjeta (Débito/Crédito)</option>
-        </select>
-        <div *ngIf="pagoVar.invalid && (pagoVar.dirty || pagoVar.touched)" class="text-danger small mt-1 fw-bold">⚠️ Obligatorio.</div>
       </div>
     </div>
+
+    <div class="mb-5">
+      <h4 class="text-warning border-bottom border-secondary pb-2 mb-4">2. Elige tus Delicias</h4>
+
+      <div class="row g-4 mb-4">
+        <div class="col-12 col-sm-6 col-md-4" *ngFor="let prod of catalogo">
+          <div class="card bg-dark text-light border-secondary shadow h-100" style="cursor: pointer; transition: 0.2s;"
+            [class.border-warning]="productoActivo?.id === prod.id" [class.border-2]="productoActivo?.id === prod.id"
+            (click)="seleccionarProducto(prod)">
+
+            <img [src]="prod.imagen" class="card-img-top object-fit-cover" style="height: 200px;"
+              alt="{{ prod.nombre }}">
+
+            <div class="card-body text-center d-flex flex-column justify-content-center">
+              <h5 class="card-title text-light fw-bold m-0" [class.text-warning]="productoActivo?.id === prod.id">{{
+                prod.nombre }}</h5>
+              <h5 class="card-title text-success fw-bold m-0" [class.text-warning]="productoActivo?.id === prod.id">{{
+                prod.precio }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="productoActivo"
+        class="bg-black bg-opacity-25 p-4 rounded-3 border border-secondary border-opacity-25 text-center shadow-sm">
+        <h5 class="text-light mb-3">Has seleccionado: <span class="text-warning fw-bold">{{ productoActivo.nombre
+            }}</span></h5>
+        <div class="d-flex justify-content-center align-items-center gap-3">
+          <label class="fw-bold text-secondary">Cantidad:</label>
+          <input type="number" class="form-control bg-dark text-light border-secondary text-center"
+            style="width: 100px;" [(ngModel)]="cantidadElegida" min="1">
+          <button class="btn btn-warning fw-bold px-4 shadow" (click)="agregarAlCarrito()">➕ Agregar al Pedido</button>
+        </div>
+        <div *ngIf="errorProducto" class="text-danger small mt-2 fw-bold">{{ errorProducto }}</div>
+      </div>
+    </div>
+
+    <div
+      class="card bg-dark-subtle bg-opacity-50 text-light border-secondary border-opacity-25 shadow-lg mb-5 p-4 rounded-4">
+      <h4 class="text-warning border-bottom border-secondary pb-2 mb-4">3. Resumen de tu Pedido</h4>
+
+      <div *ngIf="listaPedido.length === 0" class="text-center text-secondary py-4">
+        <div class="fs-1 mb-2 opacity-50">🛒</div>
+        <p>Aún no has agregado productos a tu lista.</p>
+      </div>
+
+      <div *ngIf="listaPedido.length > 0">
+        <div
+          class="d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25 pb-3 mb-3"
+          *ngFor="let item of listaPedido; let i = index">
+          <div>
+            <span class="fs-5 text-light fw-bold">🍪 {{ item.producto }}</span>
+            <div class="text-secondary small mt-1">Cantidad: {{ item.cantidad }}</div>
+          </div>
+          <div class="d-flex align-items-center gap-3">
+            <span class="badge bg-warning text-dark px-3 py-2 rounded-3 fs-6">
+              {{ formatearDinero(item.subtotal) }}
+            </span>
+            <button class="btn btn-outline-danger btn-sm px-2 py-1" (click)="eliminarItem(i)">❌</button>
+          </div>
+        </div>
+
+        <div
+          class="d-flex justify-content-between align-items-center mt-4 bg-black bg-opacity-50 p-3 rounded-3 border border-warning border-opacity-50">
+          <h3 class="text-warning fw-bold m-0">TOTAL A PAGAR:</h3>
+          <h3 class="text-warning fw-bold m-0">{{ formatearDinero(calcularTotalPedido()) }}</h3>
+        </div>
+      </div>
+
+      <div class="text-center mt-5">
+        <button class=" mb-3 btn btn-success btn-lg fw-bold px-5 py-3 shadow-lg" style="letter-spacing: 1px;"
+          (click)="enviarPedidoFinal()">
+          ✅ CONFIRMAR Y ENVIAR PEDIDO
+        </button>
+        <div *ngIf="errorCliente" class="alert alert-danger fw-bold border-danger shadow mx-auto" style="max-width: 600px;" role="alert">
+        {{ errorCliente }}
+      </div>
+      </div>
+    </div>
+
   </div>
 
-  <div class="mb-5">
-    <h4 class="text-warning border-bottom border-secondary pb-2 mb-4">2. Elige tus Delicias</h4>
-    
-    <div class="row g-4 mb-4">
-      <div class="col-12 col-sm-6 col-md-4" *ngFor="let prod of catalogo">
-        <div class="card bg-dark text-light border-secondary shadow h-100" 
-             style="cursor: pointer; transition: 0.2s;"
-             [class.border-warning]="productoActivo?.id === prod.id"
-             [class.border-2]="productoActivo?.id === prod.id"
-             (click)="seleccionarProducto(prod)">
-          
-          <img [src]="prod.imagen" class="card-img-top object-fit-cover" style="height: 200px;" alt="{{ prod.nombre }}">
-          
-          <div class="card-body text-center d-flex flex-column justify-content-center">
-            <h5 class="card-title text-light fw-bold m-0" [class.text-warning]="productoActivo?.id === prod.id">{{ prod.nombre }}</h5>
-            <h5 class="card-title text-success fw-bold m-0" [class.text-warning]="productoActivo?.id === prod.id">{{ prod.precio }}</h5>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div
+    class="position-fixed top-0 start-0 w-100 h-100 bg-black bg-opacity-75 d-flex justify-content-center align-items-center"
+    style="z-index: 1050;" *ngIf="mostrarPopupExito">
 
-    <div *ngIf="productoActivo" class="bg-black bg-opacity-25 p-4 rounded-3 border border-secondary border-opacity-25 text-center shadow-sm">
-      <h5 class="text-light mb-3">Has seleccionado: <span class="text-warning fw-bold">{{ productoActivo.nombre }}</span></h5>
-      <div class="d-flex justify-content-center align-items-center gap-3">
-        <label class="fw-bold text-secondary">Cantidad:</label>
-        <input type="number" class="form-control bg-dark text-light border-secondary text-center" style="width: 100px;" [(ngModel)]="cantidadElegida" min="1">
-        <button class="btn btn-warning fw-bold px-4 shadow" (click)="agregarAlCarrito()">➕ Agregar al Pedido</button>
-      </div>
-      <div *ngIf="errorProducto" class="text-danger small mt-2 fw-bold">{{ errorProducto }}</div>
-    </div>
-  </div>
-
-  <div class="card bg-dark-subtle bg-opacity-50 text-light border-secondary border-opacity-25 shadow-lg mb-5 p-4 rounded-4">
-    <h4 class="text-warning border-bottom border-secondary pb-2 mb-4">3. Resumen de tu Pedido</h4>
-
-    <div *ngIf="listaPedido.length === 0" class="text-center text-secondary py-4">
-      <div class="fs-1 mb-2 opacity-50">🛒</div>
-      <p>Aún no has agregado productos a tu lista.</p>
-    </div>
-
-    <div *ngIf="listaPedido.length > 0">
-      <div class="d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25 pb-3 mb-3" *ngFor="let item of listaPedido; let i = index">
-        <div>
-          <span class="fs-5 text-light fw-bold">🍪 {{ item.producto }}</span>
-          <div class="text-secondary small mt-1">Cantidad: {{ item.cantidad }}</div>
-        </div>
-        <div class="d-flex align-items-center gap-3">
-          <span class="badge bg-warning text-dark px-3 py-2 rounded-3 fs-6">
-            {{ formatearDinero(item.subtotal) }}
-          </span>
-          <button class="btn btn-outline-danger btn-sm px-2 py-1" (click)="eliminarItem(i)">❌</button>
-        </div>
-      </div>
-
-      <div class="d-flex justify-content-between align-items-center mt-4 bg-black bg-opacity-50 p-3 rounded-3 border border-warning border-opacity-50">
-        <h3 class="text-warning fw-bold m-0">TOTAL A PAGAR:</h3>
-        <h3 class="text-warning fw-bold m-0">{{ formatearDinero(calcularTotalPedido()) }}</h3>
-      </div>
-    </div>
-
-    <div class="text-center mt-5">
-      <button class="btn btn-success btn-lg fw-bold px-5 py-3 shadow-lg" style="letter-spacing: 1px;" (click)="enviarPedidoFinal()">
-        ✅ CONFIRMAR Y ENVIAR PEDIDO
+    <div class="card shadow-lg border-success bg-dark text-light text-center p-5 m-3 rounded-4"
+      style="max-width: 450px; width: 100%;">
+      <div class="text-success mb-3" style="font-size: 4rem; line-height: 1;">🎉</div>
+      <h2 class="fw-bold text-success mb-2">¡Pedido Recibido!</h2>
+      <p class="text-secondary fs-6 mb-4">
+        Tu orden ha sido registrada exitosamente. Puedes revisar los detalles y el estado en tu <b
+          class="text-light">Historial de Pedidos</b>.
+      </p>
+      <button class="btn btn-success fw-bold px-4 py-2 shadow" (click)="cerrarPopup()">
+        Entendido, ¡Gracias!
       </button>
     </div>
   </div>
-
-</div>
-
-<div class="position-fixed top-0 start-0 w-100 h-100 bg-black bg-opacity-75 d-flex justify-content-center align-items-center" 
-     style="z-index: 1050;" 
-     *ngIf="mostrarPopupExito">
-  
-  <div class="card shadow-lg border-success bg-dark text-light text-center p-5 m-3 rounded-4" style="max-width: 450px; width: 100%;">
-    <div class="text-success mb-3" style="font-size: 4rem; line-height: 1;">🎉</div>
-    <h2 class="fw-bold text-success mb-2">¡Pedido Recibido!</h2>
-    <p class="text-secondary fs-6 mb-4">
-      Tu orden ha sido registrada exitosamente. Puedes revisar los detalles y el estado en tu <b class="text-light">Historial de Pedidos</b>.
-    </p>
-    <button class="btn btn-success fw-bold px-4 py-2 shadow" (click)="cerrarPopup()">
-      Entendido, ¡Gracias!
-    </button>
-  </div>
-</div>
